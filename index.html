@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+        integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Home Page</title>
+</head>
+
+<body class="home">
+    <div class="hero">
+        <div class="video-background">
+            <div class="video-foreground">
+                <div id="player"></div>
+            </div>
+        </div>
+        <div class="overlay">
+            <div class="text-wrapper text">
+                <h1>BYU IS 404 Home Page</h1>
+            </div>
+        </div>
+    </div>
+    <div class="main-menu">
+        <div class="menu-icon">
+            <svg viewbox="0 0 60 60" width="40px" height="40px">
+                <line x1="5%" y1="50%" x2="95%" y2="50%" />
+                <line x1="5%" y1="50%" x2="95%" y2="50%" />
+            </svg>
+        </div>
+        <nav class="menu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="pages/page1.html">Page1</a></li>
+                <li><a href="pages/tree.txt">tree text</a></li>
+            </ul>
+        </nav>
+    </div>
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            document.querySelector(".menu-icon").addEventListener("click", () => {
+                document.querySelector(".main-menu").classList.toggle("menu-show");
+            });
+        });
+        // set these to change interval and video (no error checking yet)
+        const startTime = 13;
+        const endTime = 108; // may need to be adjusted....
+        const videoID = "4VcVD5kHdw8";
+
+        // load JS for API
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName("script")[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        let player;
+
+        // when YT API iframe is ready, this is called
+        function onYouTubeIframeAPIReady() {
+            // create the player
+            player = new YT.Player("player", {
+                height: "900",
+                width: "640",
+                videoId: videoID,
+                playerVars: {
+                    playsinline: 1,
+                    mute: 1,
+                    autoplay: 1,
+                    controls: 0
+                },
+                events: {
+                    onReady: (event) => {
+                        //start video when it is ready
+                        event.target.playVideo();
+                        // start looping
+                        loop();
+                    }
+                }
+            });
+        }
+
+        // move to start time, sets timer to start loop over at end time
+        loop = () => {
+            player.seekTo(startTime, true);
+            setTimeout(loop, (endTime - startTime) * 1000);
+        };
+    </script>
+</body>
+
+</html>
